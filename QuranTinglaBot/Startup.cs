@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using QuranTinglaBot.ApiClients;
+using QuranTinglaBot.Bot;
 
 namespace QuranTinglaBot
 {
@@ -27,6 +29,10 @@ namespace QuranTinglaBot
             });
 
             services.AddHttpClient();
+
+            services.AddTransient<OyatClient>();
+
+            services.AddHostedService<BotService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
