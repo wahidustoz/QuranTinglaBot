@@ -31,7 +31,6 @@ namespace QuranTinglaBot
             services.AddHttpClient();
 
             services.AddTransient<OyatClient>();
-
             services.AddHostedService<BotService>();
         }
 
