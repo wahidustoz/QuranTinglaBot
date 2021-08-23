@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using QuranTinglaBot.ApiClients;
 using QuranTinglaBot.Bot;
+using QuranTinglaBot.Entity;
 
 namespace QuranTinglaBot
 {
@@ -21,7 +23,8 @@ namespace QuranTinglaBot
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<AppDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("LocalDb")), contextLifetime: ServiceLifetime.Singleton);
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -29,7 +32,8 @@ namespace QuranTinglaBot
             });
 
             services.AddHttpClient();
-
+            
+            services.AddTransient<UpdateHandler>();
             services.AddTransient<OyatClient>();
             services.AddHostedService<BotService>();
         }
