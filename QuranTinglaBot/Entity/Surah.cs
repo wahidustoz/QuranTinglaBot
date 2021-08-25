@@ -7,7 +7,10 @@ namespace QuranTinglaBot.Entity
     {
         [Key]
         [Required]
-        public string MessageId { get; set; }
+        public string FileId { get; set; }
+
+        [Required]
+        public string FileUniqueId { get; set; }
         
         [Required]
         [Range(1, 114, ErrorMessage = "Value for Surah {0} must be between {1} and {2}.")]
