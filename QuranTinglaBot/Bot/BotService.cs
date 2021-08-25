@@ -14,13 +14,18 @@ namespace QuranTinglaBot.Bot
     {
         private readonly OyatClient mOyatClient;
         private readonly ILogger<BotService> mLogger;
+        private readonly UpdateHandler mUpdateHandler;
         private TelegramBotClient mBot;
         private User mMe;
 
-        public BotService(ILogger<BotService> logger, OyatClient oyatClient)
+        public BotService(
+                ILogger<BotService> logger, 
+                OyatClient oyatClient,
+                UpdateHandler updateHandler)
         {
             mOyatClient = oyatClient;
             mLogger = logger;
+            mUpdateHandler = updateHandler;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -32,7 +37,7 @@ namespace QuranTinglaBot.Bot
             mLogger.LogInformation($"{mMe.Username.ToUpper()} started successfully.");
             
             using var cts = new CancellationTokenSource();
-            mBot.StartReceiving(new DefaultUpdateHandler(UpdateHandler.HandleUpdateAsync, UpdateHandler.HandleErrorAsync),
+            mBot.StartReceiving(new DefaultUpdateHandler(mUpdateHandler.HandleUpdateAsync, mUpdateHandler.HandleErrorAsync),
                                cts.Token);
             
             Console.ReadLine();
